@@ -7,6 +7,13 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        db_table = 'task_manager_category'
+        verbose_name = 'Category'
+        verbose_name_plural = 'Categories'
+        ordering = ['name']
+
+
 
 class Task(models.Model):
     STATUS_CHOICES = [
@@ -26,6 +33,15 @@ class Task(models.Model):
 
     def __str__(self):
         return self.title
+
+    class Meta:
+        db_table = 'task_manager_task'
+        ordering = ['-created_at']
+        verbose_name = 'Task'
+        verbose_name_plural = 'Tasks'
+        constraints = [
+            models.UniqueConstraint(fields=['title'], name='unique_task_title'),
+    ]
 
 
 class SubTask(models.Model):
@@ -48,6 +64,14 @@ class SubTask(models.Model):
         return self.title
 
 
+    class Meta:
+        db_table = 'task_manager_subtask'
+        ordering = ['-created_at']
+        verbose_name = 'SubTask'
+        verbose_name_plural = 'SubTasks'
+        constraints = [
+            models.UniqueConstraint(fields=['title'], name='unique_subtask_title'),
+    ]
 from django.db import models
 
 # Create your models here.
