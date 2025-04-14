@@ -2,6 +2,7 @@ from django.contrib import admin
 from .models import Task, SubTask, Category
 
 
+# Инлайн форма для подзадач
 class SubTaskInline(admin.TabularInline):
     model = SubTask
     extra = 1
@@ -25,7 +26,6 @@ class SubTaskAdmin(admin.ModelAdmin):
     list_display = ('title', 'task', 'status', 'deadline', 'created_at')
     search_fields = ('title', 'description')
     list_filter = ('status',)
-
     actions = ['mark_as_done']
 
     @admin.action(description="Mark selected subtasks as Done")
