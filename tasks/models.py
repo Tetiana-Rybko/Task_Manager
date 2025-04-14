@@ -32,16 +32,14 @@ class Task(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.title
+        return self.title if len(self.title)<=10 else f'{self.title[:10]}'
 
     class Meta:
         db_table = 'task_manager_task'
         ordering = ['-created_at']
         verbose_name = 'Task'
         verbose_name_plural = 'Tasks'
-        constraints = [
-            models.UniqueConstraint(fields=['title'], name='unique_task_title'),
-    ]
+        unique_together = ['title']
 
 
 class SubTask(models.Model):
