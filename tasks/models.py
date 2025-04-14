@@ -70,6 +70,5 @@ class SubTask(models.Model):
         constraints = [
             models.UniqueConstraint(fields=['title'], name='unique_subtask_title'),
     ]
-from django.db import models
 
 # Create your models here.
