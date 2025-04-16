@@ -1,8 +1,6 @@
 from django.contrib import admin
 from .models import Task, SubTask, Category
 
-
-# Инлайн форма для подзадач
 class SubTaskInline(admin.TabularInline):
     model = SubTask
     extra = 1

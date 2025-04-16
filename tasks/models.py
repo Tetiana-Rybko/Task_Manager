@@ -67,8 +67,7 @@ class SubTask(models.Model):
         ordering = ['-created_at']
         verbose_name = 'SubTask'
         verbose_name_plural = 'SubTasks'
-        constraints = [
-            models.UniqueConstraint(fields=['title'], name='unique_subtask_title'),
-    ]
+
+
 
 # Create your models here.
