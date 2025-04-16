@@ -32,7 +32,7 @@ class TaskStatsView(APIView):
         overdue_tasks = Task.objects.filter(deadline__lt=now()).count()
 
 
-        return Response({
+        return Response ({
             'total_tasks': total_tasks,
             'overdue_tasks': overdue_tasks,
             'status_count': status_count,
