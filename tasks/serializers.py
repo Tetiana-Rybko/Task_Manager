@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from .models import Task,SubTask,Category
 from rest_framework.exceptions import ValidationError
+from django.utils import timezone
+
 
 class TaskSerializer(serializers.ModelSerializer):
     class Meta:
@@ -18,7 +20,6 @@ class TaskDetailSerializer(serializers.ModelSerializer):
      class Meta:
          model = Task
          fields = ['id', 'title', 'description', 'status', 'deadline', 'subtasks']
-
 
 
 class CategoryCreateSerializer(serializers.ModelSerializer):
@@ -41,3 +42,13 @@ class CategoryCreateSerializer(serializers.ModelSerializer):
         instance.title = validated_data.get('title', instance.title)
         instance.save()
         return instance
+
+class TaskCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Task
+        fields = '__all__'
+    def validate_deadline(self, value):
+        now = timezone.now()
+        if value < now:
+            raise serializers.ValidationError("Deadline must be greater than now")
+        return value
