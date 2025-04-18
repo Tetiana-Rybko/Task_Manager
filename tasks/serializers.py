@@ -12,6 +12,15 @@ class SubTaskCreateSerializer(serializers.ModelSerializer):
         model = SubTask
         fields = '__all__'
         read_only_fields = ['created_at']
+
+class TaskDetailSerializer(serializers.ModelSerializer):
+     subtasks = SubTaskCreateSerializer(many=True, read_only=True)
+     class Meta:
+         model = Task
+         fields = ['id', 'title', 'description', 'status', 'deadline', 'subtasks']
+
+
+
 class CategoryCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Category

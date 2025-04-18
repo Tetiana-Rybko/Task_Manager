@@ -6,10 +6,8 @@ from django.utils.timezone import now
 from django.db.models import Count
 from django.http import HttpResponse
 from .models import Task,SubTask
-from .serializers import TaskSerializer,SubTaskCreateSerializer
+from .serializers import TaskSerializer,SubTaskCreateSerializer,TaskDetailSerializer
 from rest_framework import status
-
-
 
 
 def home(request):
@@ -48,3 +46,13 @@ def create_subtask(request):
         serializer.save()
         return Response(serializer.data, status=201)
     return Response(serializer.errors, status=400)
+
+@api_view(['GET'])
+def task_detail_view(request, task_id):
+    try:
+        task = Task.objects.get(id=task_id)
+    except Task.DoesNotExist:
+        return Response(status=404)
+
+    serializer = TaskDetailSerializer(task)
+    return Response(serializer.data)
