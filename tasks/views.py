@@ -1,12 +1,15 @@
-from django.http import HttpResponse
 from rest_framework import generics
-from .models import Task
-from .serializers import TaskSerializer
-
+from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.utils.timezone import now
 from django.db.models import Count
+from django.http import HttpResponse
+from .models import Task,SubTask
+from .serializers import TaskSerializer,SubTaskCreateSerializer
+from rest_framework import status
+
+
 
 
 def home(request):
@@ -37,3 +40,11 @@ class TaskStatsView(APIView):
             'overdue_tasks': overdue_tasks,
             'status_count': status_count,
         })
+
+@api_view(['POST'])
+def create_subtask(request):
+    serializer = SubTaskCreateSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=201)
+    return Response(serializer.errors, status=400)
