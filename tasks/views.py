@@ -87,7 +87,7 @@ class SubTaskDetailUpdateDeleteView(APIView):
     def get(self, request, pk):
         subtask = self.get_object(pk)
         serializer = SubTaskCreateSerializer(subtask)
-        return Response(serialize.data)
+        return Response(serializer.data)
 
     def put(self, request, pk):
         subtask = self.get_object(pk)
