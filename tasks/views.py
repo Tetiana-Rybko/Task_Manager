@@ -100,3 +100,13 @@ class SubTaskDetailUpdateDeleteView(APIView):
         subtask = self.get_object(pk)
         subtask.delete()
         return Response(status=204)
+
+class TaskDayView(APIView):
+    def get(self, request):
+       weekday = request.query_params.get('day')
+       if weekday:
+           tasks = Task.objects.filter(deadline__day=weekday)
+       else:
+           tasks = Task.objects.all()
+       serializer = TaskSerializer(tasks, many=True)
+       return Response(serializer.data)
