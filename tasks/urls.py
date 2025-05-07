@@ -26,4 +26,6 @@ urlpatterns = [
     path('task-detail/<int:task_id>/', task_detail_view, name='task-detail-view'),
     path('task/by-day/', TaskDayView.as_view(), name='task-by-day'),
 
+
+
 ]

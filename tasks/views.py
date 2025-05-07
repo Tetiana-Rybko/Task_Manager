@@ -1,5 +1,5 @@
-from django.core.serializers import serialize
 from rest_framework.decorators import api_view
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.utils.timezone import now
@@ -69,9 +69,13 @@ def task_detail_view(request, task_id):
 
 class SubTaskListCreateView(APIView):
     def get(self, request):
-        subtasks = SubTask.objects.all()
-        serializer = SubTaskCreateSerializer(subtasks, many=True)
-        return Response(serializer.data)
+        subtasks = SubTask.objects.all().order_by('-created_at')
+        paginator = PageNumberPagination()
+        paginator.page_size = 5
+        page = paginator.paginate_queryset(subtasks, request)
+
+        serializer = SubTaskCreateSerializer(page, many=True)
+        return paginator.get_paginated_response(serializer.data)
 
     def post(self, request):
         serializer = SubTaskCreateSerializer(data=request.data)
