@@ -1,17 +1,20 @@
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, action
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.utils.timezone import now
 from django.db.models import Count
 from django.http import HttpResponse
-from .models import Task, SubTask
+from .models import Task, SubTask,Category
 from .serializers import TaskSerializer, SubTaskCreateSerializer, TaskDetailSerializer
 from rest_framework import status
 from django.shortcuts import get_object_or_404
-
+from django.db import models
+from .serializers import CategorySerializer
 from rest_framework import generics, filters
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import viewsets
+
 
 def home(request):
     return HttpResponse("Привет! Всё работает!")
@@ -83,3 +86,30 @@ class SubTaskDetailUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
 class TaskDayView(APIView):
     def get(self, request):
         return Response({"message": "TaskDayView работает!"})
+
+
+
+class CategoryViewSet(viewsets.ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+
+    def destroy(self, request, *args, **kwargs):
+        category = self.get_object()
+        category.delete()
+        return Response({"message": "Категория мягко удалена."})
+
+    @action(detail=False, methods=['get'])
+    def count_tasks(self, request):
+        categories = Category.objects.all()
+        data = []
+        for category in categories:
+            task_count = Task.objects.filter(categories=category).count()
+            data.append({
+                'category': category.name,
+                'task_count': task_count
+            })
+        return Response(data)
+
+
+
+
