@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 from environ import Env
+from datetime import timedelta
+
 
 env = Env()
 
@@ -44,6 +46,8 @@ INSTALLED_APPS = [
     'tasks',
     'rest_framework',
     'django_filters',
+    'rest_framework.authtoken',
+    'rest_framework_simplejwt'
 ]
 
 MIDDLEWARE = [
@@ -135,8 +139,18 @@ REST_FRAMEWORK = {
         'rest_framework.filters.SearchFilter',
         'rest_framework.filters.OrderingFilter',
     ],
-'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.CursorPagination',
+'DEFAULT_PAGINATION_CLASS':
+    'rest_framework.pagination.CursorPagination',
 'PAGE_SIZE':6,
+'DEFAULT_AUTHENTICATION_CLASSES':(
+    'rest_framework_simplejwt.authentication.JWTAuthentication',
+)
+
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }
 LOG_DIR = BASE_DIR / 'logs'
 LOG_DIR.mkdir(exist_ok=True)
@@ -172,7 +186,7 @@ LOGGING = {
             'propagate': False,
         },
         'django': {
-            'handlers': ['console'],
+            'handlers': [],
             'level': 'DEBUG',
             'propagate': True,
         },
