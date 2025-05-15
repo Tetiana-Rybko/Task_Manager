@@ -14,7 +14,7 @@ from .serializers import CategorySerializer
 from rest_framework import generics, filters
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
-
+import logging
 
 def home(request):
     return HttpResponse("Привет! Всё работает!")
@@ -110,6 +110,10 @@ class CategoryViewSet(viewsets.ModelViewSet):
             })
         return Response(data)
 
+logger_http = logging.getLogger('django.request')
 
+def log_test_view(request):
+    logger_http.info('TEST: HTTP LOG OK!')
+    return HttpResponse('prêt! vérifier http_logs.log')
 
 

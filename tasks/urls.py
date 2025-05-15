@@ -10,8 +10,10 @@ from .views import (
     SubTaskDetailUpdateDeleteView,
     TaskDayView,
     CategoryViewSet,
+    log_test_view
 )
 from rest_framework.routers import DefaultRouter
+
 
 router = DefaultRouter()
 router.register(r'categories', CategoryViewSet, basename='category')
@@ -26,4 +28,5 @@ urlpatterns = [
     path('subtasks/create/', create_subtask, name='create-subtask'),
     path('task-detail/<int:task_id>/', task_detail_view, name='task-detail-view'),
     path('task/by-day/', TaskDayView.as_view(), name='task-by-day'),
+    path('log-test/', log_test_view),
 ] + router.urls
