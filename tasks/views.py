@@ -14,6 +14,7 @@ from .serializers import CategorySerializer
 from rest_framework import generics, filters
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 import logging
 
 def home(request):
@@ -22,6 +23,7 @@ def home(request):
 class TaskListCreateView(generics.ListCreateAPIView):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = ['status', 'deadline']
     search_fields = ['title', 'description']
