@@ -14,7 +14,7 @@ from .serializers import CategorySerializer
 from rest_framework import generics, filters
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, AllowAny
 import logging
 
 def home(request):
@@ -34,6 +34,11 @@ class TaskListCreateView(generics.ListCreateAPIView):
 class TaskDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
+
+    def get_permissions(self):
+        if self.request.method == 'DELETE':
+            return [IsAuthenticated()]
+        return [AllowAny()]
 
 class TaskStatsView(APIView):
     def get(self, request):
