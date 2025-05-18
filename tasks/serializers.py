@@ -5,9 +5,18 @@ from django.utils import timezone
 
 
 class TaskSerializer(serializers.ModelSerializer):
+    owner = serializers.ReadOnlyField(source='owner.username')
     class Meta:
         model = Task
         fields = ['id', 'title', 'description', 'status', 'deadline']
+
+class SubTaskSerializer(serializers.ModelSerializer):
+    owner = serializers.ReadOnlyField(source='owner.username')
+    class Meta:
+        model = SubTask
+        fields = ['id', 'title', 'description', 'status', 'deadline']
+
+
 
 class SubTaskCreateSerializer(serializers.ModelSerializer):
     class Meta:
@@ -16,7 +25,7 @@ class SubTaskCreateSerializer(serializers.ModelSerializer):
         read_only_fields = ['created_at']
 
 class TaskDetailSerializer(serializers.ModelSerializer):
-     subtasks = SubTaskCreateSerializer(many=True, read_only=True)
+     subtasks = SubTaskSerializer(many=True, read_only=True)
 
      class Meta:
          model = Task
