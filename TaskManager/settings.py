@@ -141,7 +141,8 @@ REST_FRAMEWORK = {
     ],
 'DEFAULT_PAGINATION_CLASS':
     'rest_framework.pagination.CursorPagination',
-'PAGE_SIZE':6,
+'PAGE_SIZE':5,
+
 'DEFAULT_AUTHENTICATION_CLASSES':(
     'rest_framework_simplejwt.authentication.JWTAuthentication',
 )
