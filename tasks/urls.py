@@ -10,7 +10,8 @@ from .views import (
     SubTaskDetailUpdateDeleteView,
     TaskDayView,
     CategoryViewSet,
-    log_test_view, UserTaskListView
+    log_test_view, UserTaskListView,
+    RegisterView
 )
 from rest_framework.routers import DefaultRouter
 
@@ -30,4 +31,5 @@ urlpatterns = [
     path('task/by-day/', TaskDayView.as_view(), name='task-by-day'),
     path('log-test/', log_test_view),
     path('my-tasks/', UserTaskListView.as_view(), name='user-tasks'),
+    path('register/', RegisterView.as_view(), name='register'),
 ] + router.urls

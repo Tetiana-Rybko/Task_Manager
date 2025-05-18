@@ -10,12 +10,12 @@ from .serializers import TaskSerializer, SubTaskCreateSerializer, TaskDetailSeri
 from rest_framework import status
 from django.shortcuts import get_object_or_404
 from django.db import models
-from .serializers import CategorySerializer
-from rest_framework import generics, filters
+from .serializers import CategorySerializer,UserRegisterSerializer
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets, permissions,generics,filters
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, AllowAny,IsAuthenticated
 import logging
+from django.contrib.auth.models import User
 
 def home(request):
     return HttpResponse("Привет! Всё работает!")
@@ -139,4 +139,6 @@ def log_test_view(request):
     logger_http.info('TEST: HTTP LOG OK!')
     return HttpResponse('prêt! vérifier http_logs.log')
 
-
+class RegisterView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserRegisterSerializer
