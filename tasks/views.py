@@ -30,6 +30,9 @@ class TaskListCreateView(generics.ListCreateAPIView):
     ordering_fields = ['created_at']
     ordering = ['-created_at']
 
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
 
 class TaskDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Task.objects.all()
@@ -85,6 +88,8 @@ class SubTaskListCreateView(generics.ListCreateAPIView):
         if task_name:
             queryset = queryset.filter(task__title__icontains=task_name)
         return queryset
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
 
 class SubTaskDetailUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
     queryset = SubTask.objects.all()
