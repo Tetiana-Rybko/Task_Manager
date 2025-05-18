@@ -9,7 +9,7 @@ class SubTaskInline(admin.TabularInline):
 
 @admin.register(Task)
 class TaskAdmin(admin.ModelAdmin):
-    list_display = ('short_title', 'status', 'deadline', 'created_at')
+    list_display = ('short_title', 'status','owner', 'deadline', 'id','created_at')
     search_fields = ('title', 'description')
     list_filter = ('status', 'categories')
     inlines = [SubTaskInline]

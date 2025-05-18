@@ -62,7 +62,13 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+
+
 ROOT_URLCONF = 'TaskManager.urls'
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+EMAIL_HOST = "0.0.0.0"
+EMAIL_PORT = 1025
+
 
 TEMPLATES = [
     {
