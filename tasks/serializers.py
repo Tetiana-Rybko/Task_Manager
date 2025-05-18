@@ -8,20 +8,20 @@ class TaskSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')
     class Meta:
         model = Task
-        fields = ['id', 'title', 'description', 'status', 'deadline']
+        fields = ['id', 'title', 'description', 'status', 'deadline','owner']
 
 class SubTaskSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')
     class Meta:
         model = SubTask
-        fields = ['id', 'title', 'description', 'status', 'deadline']
+        fields = ['id', 'title', 'description', 'status', 'deadline','owner']
 
 
 
 class SubTaskCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = SubTask
-        fields = ['id', 'title', 'description', 'tasks','created_id', 'status', 'deadline']
+        fields = ['id', 'title', 'description', 'task','created_at', 'status', 'deadline']
         read_only_fields = ['created_at']
 
 class TaskDetailSerializer(serializers.ModelSerializer):

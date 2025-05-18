@@ -13,8 +13,8 @@ from django.db import models
 from .serializers import CategorySerializer
 from rest_framework import generics, filters
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticatedOrReadOnly, AllowAny
+from rest_framework import viewsets, permissions
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, AllowAny,IsAuthenticated
 import logging
 
 def home(request):
@@ -34,7 +34,13 @@ class TaskListCreateView(generics.ListCreateAPIView):
         serializer.save(owner=self.request.user)
 
 
+class IsOwner(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj):
+        return request.user == obj.owner
+
+
 class TaskDetailView(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsOwner,IsAuthenticated]
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
 
