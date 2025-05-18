@@ -7,15 +7,18 @@ from django.db.models import Count
 from django.http import HttpResponse
 from .models import Task, SubTask,Category
 from .serializers import TaskSerializer, SubTaskCreateSerializer, TaskDetailSerializer
-from rest_framework import status
 from django.shortcuts import get_object_or_404
 from django.db import models
 from .serializers import CategorySerializer,UserRegisterSerializer
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import viewsets, permissions,generics,filters
+from rest_framework import viewsets, permissions,generics,filters,status
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, AllowAny,IsAuthenticated
 import logging
 from django.contrib.auth.models import User
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken,OutstandingToken
+
+
 
 def home(request):
     return HttpResponse("Привет! Всё работает!")
@@ -142,3 +145,15 @@ def log_test_view(request):
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserRegisterSerializer
+
+class LogoutView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request):
+        try:
+            refresh_token = request.data.get("refresh")
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+            return Response({"detail": "Successfully logged out."}, status=status.HTTP_205_RESET_CONTENT)
+        except Exception as e:
+            return Response({"detail": "Invalid token."}, status=status.HTTP_400_BAD_REQUEST)

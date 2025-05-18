@@ -3,7 +3,6 @@ from .models import Task,SubTask,Category
 from rest_framework.exceptions import ValidationError
 from django.utils import timezone
 from django.contrib.auth.models import User
-from rest_framework import serializers
 from django.contrib.auth.password_validation import validate_password
 import re
 
