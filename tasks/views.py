@@ -91,6 +91,11 @@ class SubTaskListCreateView(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
 
+class UserTaskListView(generics.ListAPIView):
+    serializer_class = TaskSerializer
+    def get_queryset(self):
+        return Task.objects.filter(owner=self.request.user)
+
 class SubTaskDetailUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
     queryset = SubTask.objects.all()
     serializer_class = SubTaskCreateSerializer
