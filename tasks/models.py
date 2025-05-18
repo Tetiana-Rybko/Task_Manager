@@ -1,5 +1,7 @@
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth import get_user_model
+
 
 
 class CategoryManager(models.Manager):
@@ -22,6 +24,7 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+User = get_user_model()
 
 class Task(models.Model):
     STATUS_CHOICES = [
@@ -38,6 +41,8 @@ class Task(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='New')
     deadline = models.DateTimeField()
     created_at = models.DateTimeField(auto_now_add=True)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE,related_name='tasks')
+
 
     def __str__(self):
         return self.title if len(self.title)<=10 else f'{self.title[:10]}'
@@ -65,6 +70,7 @@ class SubTask(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='New')
     deadline = models.DateTimeField()
     created_at = models.DateTimeField(auto_now_add=True)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE,related_name='subtasks')
 
     def __str__(self):
         return self.title
